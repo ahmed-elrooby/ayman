@@ -15,12 +15,7 @@ export const array = [
     href: "/About",
     icon: <FaRegUser />,
   },
-  {
-    id: 3,
-    content: "Contact",
-    href: "/Contact",
-    icon: <IoMdMail />,
-  },
+
   {
     id: 4,
     content: "Projects",
@@ -34,5 +29,4 @@ export const array = [
     href: "/Resume",
     icon: <FaFilePdf />,
   },
- 
 ];
