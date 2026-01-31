@@ -3,18 +3,16 @@ import { Typewriter } from "react-simple-typewriter";
 import welcome from "../../Images/welcom.json";
 import Introduce from "../Introduce/Introduce";
 import { motion } from "framer-motion";
-import Lottie from "react-lottie-player";
 import home from "../../Images/Designer.json";
+import Lottie from "react-lottie-player";
 
 const Home = () => {
   return (
     <>
       <div className="relative z-10 m-auto w-[90%] pt-[100px] mt-[50px]">
         <div className="grid items-center justify-between grid-cols-1 gap-2 text-center lg:grid-cols-2">
-          
           {/* LEFT SECTION */}
           <div className="relative after:content-[''] after:animate-pulse transition-all after:absolute after:w-[400px] after:h-[400px] after:rounded-full after:top-[-13px] after:left-[-301px] after:bg-[#5dbcfc5f] flex items-start flex-col">
-            
             <motion.h1
               initial={{ scale: 0.5 }}
               transition={{ duration: 1.3, type: "tween" }}
@@ -31,7 +29,6 @@ const Home = () => {
             </motion.h1>
 
             <div className="md:text-[45px] text-[25px] font-bold relative after:animate-pulse after:absolute dark:text-white text-gray-600 after:w-[250px] after:h-[250px] after:bg-[#5dbcfc30] after:content-[''] after:bottom-[150px] after:rounded-full after:right-[-36px]">
-              
               <motion.div
                 initial={{ scale: 0.5 }}
                 transition={{ duration: 1.3, type: "tween" }}
@@ -56,7 +53,6 @@ const Home = () => {
                   />
                 </h1>
               </motion.div>
-
             </div>
           </div>
 
@@ -70,7 +66,6 @@ const Home = () => {
               <Lottie animationData={home} className="w-full" loop play />
             </motion.div>
           </div>
-
         </div>
 
         <Introduce />

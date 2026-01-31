@@ -1,119 +1,174 @@
 "use client";
-import { IoIosLink } from "react-icons/io";
-import "swiper/css";
-import { Autoplay } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 
-import { motion } from "framer-motion";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import Tilt from 'react-parallax-tilt';
-import { projects } from "./projectData";
+import Tilt from "react-parallax-tilt";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectCoverflow } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { graphicProjects } from "./projectData";
 
 const ProjectsPage = () => {
-  
-  return (
-    <div className="h-full mt-[100px] pt-[50px] m-auto">
+  const swiperRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-      <div className="flex mb-6 w-full mx-auto md:w-[90%] flex-col justify-center text-center leading-[1.9] items-center  gap-3">
-        <h1 className="text-[--main-color] text-[20px] md:text-[30px] font-bold capitalize">
-        Our Projects Showcase
+  return (
+    <div className="min-h-screen pt-24 pb-16 px-4 md:px-8 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      {/* ===== Header ===== */}
+      <div className="max-w-6xl mx-auto mb-16 text-center">
+        <span className="inline-block mb-4 text-[--main-color] text-sm font-semibold uppercase px-4 py-2 rounded-full bg-[--main-color]/10">
+          Creative Portfolio
+        </span>
+
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[--main-color] to-purple-600 bg-clip-text text-transparent">
+          Graphic Projects
         </h1>
-        <p className="text-gray-600  dark:text-gray-300">Explore our collection of projects that highlight innovation, creativity, and dedication. Each project reflects our passion for delivering exceptional results and meeting our clients' expectations.</p>
+
+        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed">
+          A collection of graphic designs showcasing creativity and visual
+          identity.
+        </p>
       </div>
-      <div>
+
+      {/* ===== Slider Wrapper ===== */}
+      <div className="max-w-7xl mx-auto relative">
+        {/* Navigation */}
+        <button
+          onClick={() => swiperRef.current?.slidePrev()}
+          className="slider-nav-btn left-4 md:left-[-40px]"
+        >
+          <FaChevronLeft />
+        </button>
+
+        <button
+          onClick={() => swiperRef.current?.slideNext()}
+          className="slider-nav-btn right-4 md:right-[-40px]"
+        >
+          <FaChevronRight />
+        </button>
+
+        {/* Swiper */}
         <Swiper
-          spaceBetween={5}
-          slidesPerView={3}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+          centeredSlides
+          grabCursor
           autoplay={{
-            delay: 5000,
+            delay: 4000,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
           }}
-          modules={[Autoplay]} 
-          className="mySwiper"
+          effect="coverflow"
+          coverflowEffect={{
+            rotate: 20,
+            depth: 140,
+            modifier: 1,
+            slideShadows: true,
+          }}
+          modules={[Autoplay, EffectCoverflow]}
           breakpoints={{
-            300: {
-              slidesPerView: 1,
-            },
-            400: {
-              slidesPerView: 1,
-            },
-            640: {
-              slidesPerView: 2,
-            },
-            768: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 50,
-            },
+            320: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
           }}
+          className="!pb-12"
         >
-{projects.map((project) => <SwiperSlide key={project.id}>
-  <div > {/* التأكد من ف uniqueness id */}
-   
-      <Tilt>
-        <motion.div
-          initial={{ scale: 0.5 }}
-          transition={{
-            duration: 1.3,
-            type: "tween",
-          }}
-          whileInView={{
-            scale: 1,
-          }}
-          className="relative border border-[--main-color] p-1 cursor-pointer w-[350px] group rounded-md h-[450px]"
-        >
-          <div className="absolute my-2 rounded-md bottom-0 left-0 gap-[30px] transition-all pl-[10px] group-hover:scale-[0.9] scale-0 flex flex-col items-center justify-center text-white bg-[#3264afd6] w-full h-full overflow-hidden">
-            <h1 className="font-bold text-[25px] capitalize">
-              {project.title}
-            </h1>
-            <p className="leading-[2] capitalize text-center text-sm px-2">
-              {project.description}
-            </p>
-            <div className="flex items-center justify-center gap-[50px]">
-              {project?.links.map((ele, linkIdx) => (
-                <div key={linkIdx}> {/* دمج id المشروع مع فهرس الروابط */}
-                  {ele.demo && (
-                    <Link href={ele.demo}>
-                      <IoIosLink
-                        size={28}
-                        className="cursor-pointer transition-all opacity-[0.8] text-white hover:text-[--main-color] hover:opacity-[1]"
-                      />
-                    </Link>
-                  )}
-                  {ele.github && (
-                    <Link href={ele.github}>
-                      <FaGithub
-                        className="cursor-pointer transition-all opacity-[0.8] text-white hover:text-[--main-color] hover:opacity-[1]"
-                        size={28}
-                      />
-                    </Link>
+          {graphicProjects.map((item, index) => (
+            <SwiperSlide key={item.id}>
+              <Tilt tiltMaxAngleX={6} tiltMaxAngleY={6} scale={1.05}>
+                <div
+                  className={`relative overflow-hidden rounded-2xl transition-all duration-500
+                    ${
+                      activeIndex === index
+                        ? "ring-4 ring-[--main-color] scale-105"
+                        : "ring-2 ring-gray-300 dark:ring-gray-700 opacity-80"
+                    }
+                  `}
+                >
+                  <div className="relative h-[450px] overflow-hidden">
+                    <Image
+                      src={item.img}
+                      alt="Graphic Project"
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+                    />
+                  </div>
+
+                  {/* Active Indicator */}
+                  {activeIndex === index && (
+                    <span className="absolute top-4 right-4 w-3 h-3 bg-[--main-color] rounded-full animate-pulse"></span>
                   )}
                 </div>
-              ))}
-            </div>
-          </div>
-          <Image
-            src={project.img}
-            alt={project.title}
-            className="w-full h-full max-w-full"
-            priority
-          />
-        </motion.div>
-      </Tilt>
-  </div>
-  </SwiperSlide>
-
-)}
-
-
+              </Tilt>
+            </SwiperSlide>
+          ))}
         </Swiper>
+
+        {/* Dots */}
+        <div className="flex justify-center gap-2 mt-6">
+          {graphicProjects.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => swiperRef.current?.slideTo(index)}
+              className={`transition-all duration-300 rounded-full
+                ${
+                  activeIndex === index
+                    ? "w-8 h-2 bg-[--main-color]"
+                    : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
+                }`}
+            />
+          ))}
+        </div>
       </div>
+
+      {/* Counter */}
+      <div className="mt-12 text-center text-gray-600 dark:text-gray-300">
+        <span className="text-2xl font-bold text-[--main-color]">
+          {activeIndex + 1}
+        </span>
+        <span className="mx-2">/</span>
+        <span>{graphicProjects.length}</span>
+        <span className="ml-2">Projects</span>
+      </div>
+
+      {/* Styles */}
+      <style jsx>{`
+        .slider-nav-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          background: white;
+          border: 2px solid var(--main-color);
+          color: var(--main-color);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+
+        .slider-nav-btn:hover {
+          background: var(--main-color);
+          color: white;
+          transform: translateY(-50%) scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+          .slider-nav-btn {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 };
