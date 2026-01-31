@@ -10,7 +10,6 @@ import { Autoplay, EffectCoverflow } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { graphicProjects } from "./projectData";
 
 const ProjectsPage = () => {
@@ -37,22 +36,6 @@ const ProjectsPage = () => {
 
       {/* ===== Slider Wrapper ===== */}
       <div className="max-w-7xl mx-auto relative">
-        {/* Navigation */}
-        <button
-          onClick={() => swiperRef.current?.slidePrev()}
-          className="slider-nav-btn left-4 md:left-[-40px]"
-        >
-          <FaChevronLeft />
-        </button>
-
-        <button
-          onClick={() => swiperRef.current?.slideNext()}
-          className="slider-nav-btn right-4 md:right-[-40px]"
-        >
-          <FaChevronRight />
-        </button>
-
-        {/* Swiper */}
         <Swiper
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
@@ -93,9 +76,9 @@ const ProjectsPage = () => {
                   <div className="relative h-[450px] overflow-hidden">
                     <Image
                       src={item.img}
-                      alt="Graphic Project"
+                      alt={item.title || "Graphic Project"}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover transition-transform duration-700"
                       sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
                     />
                   </div>
@@ -113,15 +96,15 @@ const ProjectsPage = () => {
         {/* Dots */}
         <div className="flex justify-center gap-2 mt-6">
           {graphicProjects.map((_, index) => (
-            <button
+            <span
               key={index}
-              onClick={() => swiperRef.current?.slideTo(index)}
               className={`transition-all duration-300 rounded-full
                 ${
                   activeIndex === index
                     ? "w-8 h-2 bg-[--main-color]"
-                    : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
-                }`}
+                    : "w-2 h-2 bg-gray-300"
+                }
+              `}
             />
           ))}
         </div>
@@ -136,39 +119,6 @@ const ProjectsPage = () => {
         <span>{graphicProjects.length}</span>
         <span className="ml-2">Projects</span>
       </div>
-
-      {/* Styles */}
-      <style jsx>{`
-        .slider-nav-btn {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 10;
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          background: white;
-          border: 2px solid var(--main-color);
-          color: var(--main-color);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: 0.3s;
-        }
-
-        .slider-nav-btn:hover {
-          background: var(--main-color);
-          color: white;
-          transform: translateY(-50%) scale(1.1);
-        }
-
-        @media (max-width: 768px) {
-          .slider-nav-btn {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
   );
 };

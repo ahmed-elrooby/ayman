@@ -4,8 +4,9 @@ import welcome from "../../Images/welcom.json";
 import Introduce from "../Introduce/Introduce";
 import { motion } from "framer-motion";
 import home from "../../Images/Designer.json";
-import Lottie from "react-lottie-player";
+import dynamic from "next/dynamic";
 
+const Lottie = dynamic(() => import("react-lottie-player"), { ssr: false });
 const Home = () => {
   return (
     <>
